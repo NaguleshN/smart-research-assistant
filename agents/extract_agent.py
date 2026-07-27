@@ -6,7 +6,7 @@ import logging
 from typing import Any
 
 from anthropic import AnthropicBedrock
-from anthropic.types import MessageParam
+from anthropic.types import MessageParam, ToolResultBlockParam
 
 from prompts import extract as extract_prompts
 from schemas.report import ExtractedFact, SearchResult
@@ -73,15 +73,15 @@ def run(
                     logger.info("extract_agent extracted %d facts", len(facts))
                     return facts, iteration
 
-        tool_results = []
+        tool_results: list[ToolResultBlockParam] = []
         for block in response.content:
             if block.type == "tool_use":
                 tool_results.append(
-                    {
-                        "type": "tool_result",
-                        "tool_use_id": block.id,
-                        "content": json.dumps({"status": "tool_executed"}),
-                    }
+                    ToolResultBlockParam(
+                        type="tool_result",
+                        tool_use_id=block.id,
+                        content=json.dumps({"status": "tool_executed"}),
+                    )
                 )
 
         if tool_results:

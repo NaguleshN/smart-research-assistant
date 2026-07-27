@@ -6,7 +6,7 @@ import logging
 from typing import Any
 
 from anthropic import AnthropicBedrock
-from anthropic.types import MessageParam
+from anthropic.types import MessageParam, ToolResultBlockParam
 
 from prompts import search as search_prompts
 from schemas.report import SearchResult
@@ -76,17 +76,17 @@ def run(query: str, client: AnthropicBedrock) -> tuple[list[SearchResult], int]:
                     return results, iteration
 
         # Handle tool use — append tool results and continue loop
-        tool_results = []
+        tool_results: list[ToolResultBlockParam] = []
         for block in response.content:
             if block.type == "tool_use":
                 # MCP handles execution; we just append a placeholder result
                 # so the loop can continue (real MCP SDK handles this automatically)
                 tool_results.append(
-                    {
-                        "type": "tool_result",
-                        "tool_use_id": block.id,
-                        "content": json.dumps({"status": "tool_executed"}),
-                    }
+                    ToolResultBlockParam(
+                        type="tool_result",
+                        tool_use_id=block.id,
+                        content=json.dumps({"status": "tool_executed"}),
+                    )
                 )
 
         if tool_results:
