@@ -131,7 +131,7 @@ async def _web_search(query: str, num_results: int) -> dict:
                     }
                 )
         return {"results": results}
-    except Exception as exc:
+    except (httpx.HTTPError, ValueError) as exc:
         logger.warning("web_search failed: %s", exc)
         return {"results": [], "error": str(exc)}
 
@@ -146,7 +146,7 @@ async def _fetch_page(url: str, max_chars: int) -> dict:
             resp = await client.get(url)
             text = resp.text[:max_chars]
         return {"url": url, "status": resp.status_code, "content": text}
-    except Exception as exc:
+    except (httpx.HTTPError, OSError) as exc:
         logger.warning("fetch_page failed for %s: %s", url, exc)
         return {"url": url, "error": str(exc)}
 

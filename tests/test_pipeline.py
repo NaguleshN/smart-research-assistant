@@ -4,9 +4,7 @@ from __future__ import annotations
 import json
 from unittest.mock import MagicMock, patch
 
-import pytest
-
-from schemas.report import ExtractedFact, ResearchReport, SearchResult
+from schemas.report import ResearchReport
 
 
 def _make_text_response(text: str, stop_reason: str = "end_turn"):

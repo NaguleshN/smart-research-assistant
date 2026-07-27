@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import Optional
+
+
 from pydantic import BaseModel, field_validator
 
 
@@ -21,7 +22,7 @@ class ExtractedFact(BaseModel):
     source_url: str
     confidence: float
     category: str  # e.g. "statistic", "definition", "finding"
-    quote: Optional[str] = None
+    quote: str | None = None
 
 
 class ResearchReport(BaseModel):
