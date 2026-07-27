@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pytest:*)",
+      "Bash(mypy:*)",
+      "Bash(ruff:*)",
+      "Bash(python:*)",
+      "Bash(pip:*)",
+      "Read(*)",
+      "Edit(*)",
+      "Write(*)"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(rm -rf*)"
+    ]
+  },
+  "env": {
+    "MCP_SERVER_PORT": "8765",
+    "CACHE_DIR": ".cache"
+  }
+}
