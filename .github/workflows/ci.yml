@@ -24,6 +24,14 @@ jobs:
       - name: Type check
         run: mypy agents/ pipeline/ schemas/ --strict --ignore-missing-imports
 
+      - name: Set AWS session token if present
+        env:
+          _SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+        run: |
+          if [ -n "$_SESSION_TOKEN" ]; then
+            echo "AWS_SESSION_TOKEN=$_SESSION_TOKEN" >> $GITHUB_ENV
+          fi
+
       - name: Run tests
         run: pytest tests/ -v --tb=short
         env:

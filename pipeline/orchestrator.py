@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import logging
 
-from anthropic import AnthropicBedrock
+import anthropic
 
 from agents import extract_agent, search_agent, summarise_agent
 from schemas.report import ResearchReport
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def run(query: str) -> ResearchReport:
-    client = AnthropicBedrock()
+    client = anthropic.AnthropicBedrock()
 
     token_totals = {"total": 0, "cached": 0}
     agent_iterations: dict[str, int] = {}

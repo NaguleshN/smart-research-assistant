@@ -52,7 +52,7 @@ SUMMARISE_JSON = json.dumps({
 })
 
 
-@patch("pipeline.orchestrator.anthropic.Anthropic")
+@patch("pipeline.orchestrator.anthropic.AnthropicBedrock")
 def test_orchestrator_happy_path(mock_anthropic_cls):
     mock_client = MagicMock()
     mock_anthropic_cls.return_value = mock_client
