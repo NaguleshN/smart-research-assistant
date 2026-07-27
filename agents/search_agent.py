@@ -6,6 +6,7 @@ import logging
 from typing import Any
 
 from anthropic import AnthropicBedrock
+from anthropic.types import MessageParam
 
 from prompts import search as search_prompts
 from schemas.report import SearchResult
@@ -15,7 +16,7 @@ logger = logging.getLogger(__name__)
 MAX_ITERATIONS = 5
 MODEL = "anthropic.claude-opus-4-8"
 
-MCP_TOOLS: list[dict] = [
+MCP_TOOLS: list[dict[str, Any]] = [
     {
         "type": "mcp",
         "server_label": "research",
@@ -31,7 +32,7 @@ class AgentMaxIterationsError(RuntimeError):
 
 def run(query: str, client: AnthropicBedrock) -> tuple[list[SearchResult], int]:
     """Run the search agentic loop. Returns (results, iterations_used)."""
-    messages: list[dict[str, Any]] = [
+    messages: list[MessageParam] = [
         {"role": "user", "content": search_prompts.user_prompt(query)}
     ]
     total_tokens = 0

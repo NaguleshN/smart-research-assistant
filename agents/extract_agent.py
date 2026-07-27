@@ -6,6 +6,7 @@ import logging
 from typing import Any
 
 from anthropic import AnthropicBedrock
+from anthropic.types import MessageParam
 
 from prompts import extract as extract_prompts
 from schemas.report import ExtractedFact, SearchResult
@@ -15,7 +16,7 @@ logger = logging.getLogger(__name__)
 MAX_ITERATIONS = 8
 MODEL = "anthropic.claude-opus-4-8"
 
-MCP_TOOLS: list[dict] = [
+MCP_TOOLS: list[dict[str, Any]] = [
     {
         "type": "mcp",
         "server_label": "research",
@@ -34,7 +35,7 @@ def run(
 ) -> tuple[list[ExtractedFact], int]:
     """Run the extract agentic loop. Returns (facts, iterations_used)."""
     sources_json = json.dumps([s.model_dump() for s in sources], indent=2)
-    messages: list[dict[str, Any]] = [
+    messages: list[MessageParam] = [
         {"role": "user", "content": extract_prompts.user_prompt(sources_json)}
     ]
 

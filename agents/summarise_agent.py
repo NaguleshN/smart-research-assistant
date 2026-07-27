@@ -7,9 +7,9 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any
 
 from anthropic import AnthropicBedrock
+from anthropic.types import MessageParam
 
 from prompts import summarise as summarise_prompts
 from schemas.report import ExtractedFact, ResearchReport, SearchResult
@@ -36,7 +36,7 @@ def run(
     facts_json = json.dumps([f.model_dump() for f in facts], indent=2)
 
     # D5: mark large facts payload as cacheable in the user turn
-    messages: list[dict[str, Any]] = [
+    messages: list[MessageParam] = [
         {
             "role": "user",
             "content": [
